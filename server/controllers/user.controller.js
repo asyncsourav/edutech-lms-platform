@@ -6,9 +6,9 @@ import generateToken from "../utils/generateToken.js";
 
 
 // controller for registering an user
-const register = async (req, res) => {
+export const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body.trim();
+        const { name, email, password } = req.body;
         // if any field is missing
         if (!name || !email || !password) {
             return res.status(400).json({
@@ -52,7 +52,7 @@ const register = async (req, res) => {
 // controller for logging in an user
 export const login = async(req, res) => {
     try{
-        const { email, password } = req.body.trim();
+        const { email, password } = req.body;
         // if any field is missing
         if (!email || !password) {
             return res.status(400).json({
