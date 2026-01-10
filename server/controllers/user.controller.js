@@ -18,7 +18,7 @@ export const register = async (req, res) => {
         }
         // if there is already an existing user with the email
         const existingUser = await User.findOne({ email: email.toLowerCase() });
-        if(existingUser) {
+        if (existingUser) {
             return res.status(400).json({
                 success: false,
                 message: "User already exist with this email",
@@ -36,7 +36,7 @@ export const register = async (req, res) => {
             success: true,
             message: "User created Successfully"
         });
-        
+
     } catch (error) {
         // failed to create user
         console.error("Error message: ", error);
@@ -50,8 +50,8 @@ export const register = async (req, res) => {
 
 
 // controller for logging in an user
-export const login = async(req, res) => {
-    try{
+export const login = async (req, res) => {
+    try {
         const { email, password } = req.body;
         // if any field is missing
         if (!email || !password) {
@@ -62,7 +62,7 @@ export const login = async(req, res) => {
         }
         // if user doesnot exist 
         const existingUser = await User.findOne({ email: email.toLowerCase() });
-        if(!existingUser) {
+        if (!existingUser) {
             return res.status(400).json({
                 success: false,
                 message: "Incorrect email or password",
@@ -78,7 +78,7 @@ export const login = async(req, res) => {
         }
         // setting up the JWT token 
         generateToken(res, existingUser, `Welcome back ${existingUser.name}`);
-        
+
     } catch (err) {
         // failed to login
         console.error("Error message: ", err);
