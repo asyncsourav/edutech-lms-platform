@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 import { ENV } from '../config/env.js'
 import { User } from '../models/user.model.js'
 
+
+// if the user is loggedin or not
 export const protectRoute = async (req, res, next) => {
     try {
         // if the requested user do not have any token 
