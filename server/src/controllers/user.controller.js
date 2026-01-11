@@ -69,3 +69,65 @@ export const Register = async (req, res) => {
 };
 
 
+
+
+// Controller for logging in existing user
+export const Login = async (req, res) => {
+    try {
+        // Extract fields from request body
+        const { email, password } = req.body;      
+        // Check if any required field is missing
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide email and password"
+            });
+        }
+        // Find user by email (await fixed)
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid email or password"
+            });
+        }
+        // Verify password using bcrypt
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if (!isPasswordCorrect) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid email or password"
+            });
+        }
+        // Generate JWT token (now defined)
+        const token = jwt.sign({ userID: user._id }, ENV.JWT_SECRET);
+
+        // Set admin flag if matches admin email (save to DB)
+        if (user.email === ENV.ADMIN) {
+            user.admin = true;
+            await user.save(); 
+        }
+        // Set secure httpOnly cookie
+        res.cookie("token", token, {
+            maxAge: 1 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "none" 
+        });
+        // Send success response
+        res.status(200).json({
+            success: true,
+            message: `welcome back ${user.email === ENV.ADMIN ? 'admin' : 'user'} ${user.fullName}`
+        });
+
+    } catch (error) {
+        // Log error for debugging
+        console.log(`Error in login controller: ${error.message}`);
+        res.status(500).json({
+            success: false,
+            message: "Failed to login user"
+        });
+    }
+};
+
+
