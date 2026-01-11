@@ -76,7 +76,7 @@ export const Login = async (req, res) => {
     try {
         // Extract fields from request body
         const { email, password } = req.body;
-        email = email.toLowerCase();
+
         // Check if any required field is missing
         if (!email || !password) {
             return res.status(400).json({
@@ -169,8 +169,24 @@ export const getUser = async (req, res) => {
 
 
 
-// controller for logout user
+// controller for logout user - Clears the cookie
 export const Logout = async (req, res) => {
-    
-}
+    try {
+        // Clear the httpOnly cookie by setting maxAge to 0
+        res.cookie("token", "", {
+            maxAge: 0,           // Immediately expires
+            httpOnly: true,
+        }).status(200).json({
+            success: true,
+            message: "Logged out successfully"
+        });
+    } catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Logout failed"
+        });
+    }
+};
+
 
