@@ -47,10 +47,10 @@ export const Register = async (req, res) => {
         }
         // Set secure httpOnly cookie with 1 day expiry
         res.cookie("token", token, {
-            maxAge: 1 * 24 * 60 * 60 * 1000, 
+            maxAge: 1 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: "none" 
+            sameSite: "none"
         });
         // Send success response
         res.status(201).json({
@@ -75,7 +75,7 @@ export const Register = async (req, res) => {
 export const Login = async (req, res) => {
     try {
         // Extract fields from request body
-        const { email, password } = req.body;      
+        const { email, password } = req.body;
         // Check if any required field is missing
         if (!email || !password) {
             return res.status(400).json({
@@ -105,14 +105,14 @@ export const Login = async (req, res) => {
         // Set admin flag if matches admin email (save to DB)
         if (user.email === ENV.ADMIN) {
             user.admin = true;
-            await user.save(); 
+            await user.save();
         }
         // Set secure httpOnly cookie
         res.cookie("token", token, {
             maxAge: 1 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            sameSite: "none" 
+            sameSite: "none"
         });
         // Send success response
         res.status(200).json({
@@ -122,7 +122,7 @@ export const Login = async (req, res) => {
 
     } catch (error) {
         // Log error for debugging
-        console.log(`Error in login controller: ${error.message}`);
+        console.log(`Error in login controller: ${error}`);
         res.status(500).json({
             success: false,
             message: "Failed to login user"
@@ -134,3 +134,36 @@ export const Login = async (req, res) => {
 
 
 // controller for getting the data of the user
+export const getUser = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "user not found"
+            });
+        } else {
+            return res.status(200).json({
+                success: true,
+                user: {
+                    id: user._id,
+                    fullName: user.fullName,
+                    email: user.email,
+                    admin: user.admin
+                }
+            });
+        }
+
+    } catch (error) {
+        // log error for debugging 
+        console.error("Failed to getUser: ", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to get user data"
+        });
+    }
+}
+
+
+

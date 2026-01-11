@@ -22,14 +22,14 @@ export const protectRoute = async (req, res, next) => {
         try {
             decode = jwt.verify(token, ENV.JWT_SECRET);
             if (!decode || !decode.userID) {
-                res.status(401).json({
+                return res.status(401).json({
                     success: false,
                     message: "Invalid token payload"
                 });
             }     
         } catch (jwtError) {
             console.log("Authentication failed: ", jwtError);
-            res.status(401).json({
+            return res.status(401).json({
                 success: false,
                 message: "Invalid or expired token",
                 error: jwtError.message
@@ -50,7 +50,7 @@ export const protectRoute = async (req, res, next) => {
     } catch (error) {
         // for debugging any errors
         console.log("protectRoute error ", error);
-        res.status(500).json({
+        res.status(401).json({
             success: false,
             message: "Authentication failed",
         })
