@@ -131,3 +131,6 @@ export const Login = async (req, res) => {
 };
 
 
+
+
+// controller for getting the data of the user

@@ -1,0 +1,58 @@
+
+
+import jwt from 'jsonwebtoken'
+import { ENV } from '../config/env.js'
+import { User } from '../models/user.model.js'
+
+export const protectRoute = async (req, res, next) => {
+    try {
+        // if the requested user do not have any token 
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: "Authentication required - No token provided"
+            });
+        }
+
+        // verify the token of the user 
+        let decode;
+        try {
+            decode = jwt.verify(token, ENV.JWT_SECRET);
+            if (!decode || !decode.userID) {
+                res.status(401).json({
+                    success: false,
+                    message: "Invalid token payload"
+                });
+            }     
+        } catch (jwtError) {
+            console.log("Authentication failed: ", jwtError);
+            res.status(401).json({
+                success: false,
+                message: "Invalid or expired token",
+                error: jwtError.message
+            });
+        }
+
+        // setting up the req.user
+        const user = await User.findById(decode.userID).select("-password") // this will not add password of the user 
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "User not found or deleted"
+            });
+        }
+        req.user = user;
+        next();
+        
+    } catch (error) {
+        // for debugging any errors
+        console.log("protectRoute error ", error);
+        res.status(500).json({
+            success: false,
+            message: "Authentication failed",
+        })
+    }
+}
+
+
