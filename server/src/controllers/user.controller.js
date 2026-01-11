@@ -34,7 +34,7 @@ export const Register = async (req, res) => {
         // Create new user in database
         const newUser = await User.create({
             fullName,
-            email,
+            email: email.toLowerCase(),
             password: hashedPassword,
         });
         // Generate JWT token synchronously
@@ -76,6 +76,7 @@ export const Login = async (req, res) => {
     try {
         // Extract fields from request body
         const { email, password } = req.body;
+        email = email.toLowerCase();
         // Check if any required field is missing
         if (!email || !password) {
             return res.status(400).json({
