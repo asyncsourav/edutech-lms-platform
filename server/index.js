@@ -1,33 +1,25 @@
 
 import express from "express";
-import dotenv from "dotenv";
-import connectDB from "./database/db.js";
-import userRoute from "./routes/user.route.js";
+import connectDB from "./src/config/db.js";
 import cookieParser from "cookie-parser";
-import cors from "cors";
+import { ENV } from "./src/config/env.js";
 
 
-// setting up the server
+// setting up the server and using middleware
 const app = express();
-dotenv.config({});
-const PORT = process.env.PORT || 3000;
-
-// using middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: "http://localhost:8080",
-    credentials: true,
-}));
 
-
-// api routes
-app.use("/api/v1/user", userRoute);
 
 
 // connect db and starting server
-app.listen(PORT, () => {
-    console.log(`Server running at port ${PORT}`);
-    connectDB();
+app.listen(ENV.PORT, () => {
+    console.log(`Server started at port ${ENV.PORT}....`);
+    
+    // connecting to database after server starts
+    connectDB().catch((err) => {
+            console.error({ message: "Error connecting to the database", error: err });
+            console.log("Server is running without database connection...");
+        });
 });
 
