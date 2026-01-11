@@ -2,25 +2,26 @@
 
 import mongoose from "mongoose";
 
-const orderSchema  = new mongoose.Schema({
-    user:{
+const orderSchema = new mongoose.Schema({
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    course:{
+    course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course"
     },
-    totalAmount:{
+    totalAmount: {
         type: Number,
         required: true
     },
-    stripeSessionId:{
+    stripeSessionId: {
         type: String,
         unique: true
     }
 }, { timestamps: true })
 
 // creating and exporting the Order model
-export const Order = mongoose.model("Order", orderSchema)
+export const Order = mongoose.model("Order", orderSchema);
+
