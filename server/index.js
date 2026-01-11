@@ -3,7 +3,8 @@ import express from "express";
 import connectDB from "./src/config/db.js";
 import cookieParser from "cookie-parser";
 import { ENV } from "./src/config/env.js";
-import userRoute from "./src/routes/user.route.js"
+import userRoute from "./src/routes/user.route.js";
+import cors from "cors";
 
 
 
