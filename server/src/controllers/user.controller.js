@@ -167,3 +167,9 @@ export const getUser = async (req, res) => {
 
 
 
+
+// controller for logout user
+export const Logout = async (req, res) => {
+    
+}
+
