@@ -58,3 +58,25 @@ export const protectRoute = async (req, res, next) => {
 }
 
 
+
+// check if the user is an admin or not 
+export const adminRoute = async (req, res, next) => {
+    try {
+        if (req.user && req.user.email === ENV.ADMIN) {
+            next();
+        } else {
+            return res.status(403).json({
+                success: false,
+                message: "admin access required"
+            })
+        }
+    } catch (error) {
+        console.error("AdminRoute error: ", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to authenticate admin"
+        })
+    }
+}
+
+
