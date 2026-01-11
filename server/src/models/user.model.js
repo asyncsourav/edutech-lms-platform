@@ -2,31 +2,31 @@
 import mongoose from "mongoose";
 
 // creating a user schema
-const userSchema  = new mongoose.Schema({
-    fullName:{
+const userSchema = new mongoose.Schema({
+    fullName: {
         type: String,
         required: true
     },
-    email:{
+    email: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    admin:{
+    admin: {
         type: Boolean,
         default: false
     },
-    purchasedCourse:[
+    purchasedCourse: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Course"  
+            ref: "Course"
         }
     ],
-    profilePhoto:{
+    profilePhoto: {
         type: String,
         default: "https://www.pngmart.com/files/23/Profile-PNG-Photo.png"
     },
