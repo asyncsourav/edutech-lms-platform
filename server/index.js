@@ -1,10 +1,13 @@
 
 import express from "express";
-import connectDB from "./src/config/db.js";
 import cookieParser from "cookie-parser";
-import { ENV } from "./src/config/env.js";
-import userRoute from "./src/routes/user.route.js";
 import cors from "cors";
+
+import { ENV } from "./src/config/env.js";
+import connectDB from "./src/config/db.js";
+
+import userRoute from "./src/routes/user.route.js";
+import courseRoute from "./src/routes/course.route.js";
 
 
 
@@ -12,16 +15,17 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin:ENV.CLIENT_URL,
-    credentials:true
+    origin: ENV.CLIENT_URL,
+    credentials: true
 }));
 
 
 
 // routing the api
 app.use("/api", userRoute);
+app.use("/api", courseRoute);
 
 
 
@@ -35,7 +39,7 @@ connectDB()
         });
     })
     .catch(err => {
-            console.error({ message: "Error connecting to the database", error: err });
+        console.error({ message: "Error connecting to the database", error: err });
         process.exit(1);
     });
 
