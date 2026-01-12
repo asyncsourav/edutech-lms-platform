@@ -49,3 +49,26 @@ export const createModule = async (req, res) => {
 
 
 
+// get data of single course module
+export const getSingleCourseModule = async(req,res)=>{
+    try {
+        const moduleId = req.params.id;
+        if(!moduleId){
+            return res.status(401).json({
+                message:"Please provide module id"
+            })
+        }
+
+        const singleModule = await Modules.findById(moduleId)
+
+        if(!singleModule){
+            return res.status(401).json({
+                message:"Module not found"
+            })
+        }
+
+        return res.status(201).json(singleModule)
+    } catch (error) {
+        console.log(error ,"from get single course module")
+    }
+}
