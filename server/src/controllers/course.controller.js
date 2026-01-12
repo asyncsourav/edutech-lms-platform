@@ -2,11 +2,11 @@
 
 import cloudinary from "../config/cloudinary.js";
 import { ENV } from "../config/env.js";
-import { Course } from "../models/course.model.js";
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import mongoose from "mongoose";
-import { User } from "../models/user.model.js";
-import { Modules } from '../models/module.model.js';
+
+import { Enrollment } from "../models/enrollment.model.js";
+import { Course } from "../models/course.model.js";
 
 
 
@@ -152,8 +152,7 @@ export const getCourse = async (req, res) => {
 // controller for getting the data of one course 
 export const getSingleCourse = async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const course = await Course.findById(courseId).populate("userId", "name");
+        const { id: courseId } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(courseId)) {
             return res.status(400).json({
@@ -162,6 +161,7 @@ export const getSingleCourse = async (req, res) => {
             });
         }
 
+        const course = await Course.findById(courseId).populate("userId", "name");
         if (!course) {
             return res.status(404).json({
                 success: false,
@@ -180,6 +180,54 @@ export const getSingleCourse = async (req, res) => {
     }
 }
 
+
+
+
+
+// controller for geting data of one purchased course 
+// if user purchased 4 course - now user wanna study any one course - then this will provide that one course from the purchased course
+export const getPurchasedCourse = async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        const userId = req.user._id;
+
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid course ID",
+            });
+        }
+
+        // Check if user purchased this course
+        const enrollment = await Enrollment.findOne({
+            userId,
+            courseId,
+        });
+
+        if (!enrollment) {
+            return res.status(403).json({
+                success: false,
+                message: "You have not purchased this course",
+            });
+        }
+
+        const course = await Course.findById(courseId).populate("modules");
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+        return res.status(200).json(course);
+
+    } catch (error) {
+        console.error("Get purchased course error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
 
 
 
