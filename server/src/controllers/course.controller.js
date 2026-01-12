@@ -231,3 +231,39 @@ export const getPurchasedCourse = async (req, res) => {
 
 
 
+
+
+
+// controller for get all purchased course
+export const getAllPurchasedCourse = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        // Get all enrollments of user
+        const enrollments = await Enrollment.find({ userId })
+            .populate({
+                path: "courseId",
+                select: "title thumbnail amount",
+            });
+
+        if (!enrollments.length) {
+            return res.status(200).json({
+                courses: [],
+            });
+        }
+        // Extract only course data
+        const courses = enrollments.map(e => e.courseId).filter(c => c !== null);
+        return res.status(200).json({
+            courses
+        });
+
+    } catch (error) {
+        console.error("Get all purchased courses error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
+
