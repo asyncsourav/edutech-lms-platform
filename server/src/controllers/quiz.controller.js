@@ -172,3 +172,43 @@ export const generateQuiz = async (req, res) => {
 
 
 
+
+// GET QUIZ WITH QUESTIONS
+export const getQuiz = async (req, res) => {
+    try {
+        const quizId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(quizId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid quiz ID",
+            });
+        }
+
+        const quiz = await Quiz.findOne({
+            _id: quizId,
+            userId: req.user._id,
+        }).populate("questions");
+
+        if (!quiz) {
+            return res.status(404).json({
+                success: false,
+                message: "Quiz not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            quiz,
+        });
+
+    } catch (error) {
+        console.log("getQuiz error", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
+
