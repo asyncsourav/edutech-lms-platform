@@ -4,6 +4,7 @@ import cloudinary from "../config/cloudinary.js";
 import { ENV } from "../config/env.js";
 import { Course } from "../models/course.model.js";
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import { Modules } from '../models/module.model.js';
 
@@ -83,7 +84,7 @@ export const createCourse = async (req, res) => {
 
 
 
-// controller for getting the data of the course 
+// controller for getting the data of the all matching course 
 export const getCourse = async (req, res) => {
     try {
         const { search } = req.query;
@@ -143,6 +144,41 @@ export const getCourse = async (req, res) => {
         });
     }
 };
+
+
+
+
+
+// controller for getting the data of one course 
+export const getSingleCourse = async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        const course = await Course.findById(courseId).populate("userId", "name");
+
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid course ID",
+            });
+        }
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "course not found"
+            });
+        }
+
+        return res.status(200).json(course);
+
+    } catch (error) {
+        console.error("Get single course Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
 
 
 
