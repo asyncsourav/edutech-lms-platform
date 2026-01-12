@@ -8,6 +8,7 @@ import connectDB from "./src/config/db.js";
 
 import userRoute from "./src/routes/user.route.js";
 import courseRoute from "./src/routes/course.route.js";
+import moduleRoute from "./src/routes/module.route.js";
 
 
 
@@ -26,6 +27,7 @@ app.use(cors({
 // routing the api
 app.use("/api", userRoute);
 app.use("/api", courseRoute);
+app.use("/api", moduleRoute);
 
 
 

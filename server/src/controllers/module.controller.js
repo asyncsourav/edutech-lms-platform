@@ -1,7 +1,7 @@
 
 
 import { Course } from "../models/course.model.js";
-import { Modules } from "../models/module.model.js";
+import { Modules } from "../models/modules.model.js";
 import { Comment } from "../models/comment.model.js";
 
 
