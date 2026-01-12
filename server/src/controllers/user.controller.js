@@ -1,9 +1,10 @@
 
 
 import { User } from "../models/user.model.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { ENV } from "../config/env.js";
+import cloudinary from "../config/cloudinary.js";
 
 
 
@@ -21,7 +22,7 @@ export const Register = async (req, res) => {
             });
         }
         // Check if user already exists with this email
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
             return res.status(400).json({
                 success: false,
@@ -37,8 +38,8 @@ export const Register = async (req, res) => {
             email: email.toLowerCase(),
             password: hashedPassword,
         });
-        // Generate JWT token synchronously
-        const token = jwt.sign({ userID: newUser._id }, ENV.JWT_SECRET);
+        // Generate JWT token 
+        const token = jwt.sign({ userId: newUser._id }, ENV.JWT_SECRET, { expiresIn: "1d" });
 
         // Check if this is admin email and set admin flag
         if (newUser.email === ENV.ADMIN) {
@@ -84,8 +85,8 @@ export const Login = async (req, res) => {
                 message: "Please provide email and password"
             });
         }
-        // Find user by email (await fixed)
-        const user = await User.findOne({ email });
+        // Find user by email (case-insensitive search)
+        const user = await User.findOne({ email: email.toLowerCase() });
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -100,8 +101,8 @@ export const Login = async (req, res) => {
                 message: "Invalid email or password"
             });
         }
-        // Generate JWT token (now defined)
-        const token = jwt.sign({ userID: user._id }, ENV.JWT_SECRET);
+        // Generate JWT token 
+        const token = jwt.sign({ userId: user._id }, ENV.JWT_SECRET, { expiresIn: "1d" });
 
         // Set admin flag if matches admin email (save to DB)
         if (user.email === ENV.ADMIN) {
@@ -138,23 +139,14 @@ export const Login = async (req, res) => {
 export const getUser = async (req, res) => {
     try {
         const userId = req.user._id;
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).select('-password');
         if (!user) {
             return res.status(401).json({
                 success: false,
                 message: "user not found"
             });
-        } else {
-            return res.status(200).json({
-                success: true,
-                user: {
-                    id: user._id,
-                    fullName: user.fullName,
-                    email: user.email,
-                    admin: user.admin
-                }
-            });
         }
+        return res.status(200).json(user);
 
     } catch (error) {
         // log error for debugging 
@@ -193,3 +185,60 @@ export const Logout = async (req, res) => {
 
 
 
+
+// Controller for updating user profile
+export const updateProfile = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { fullName } = req.body;
+
+        const updateData = {};
+
+        if (fullName) {
+            updateData.fullName = fullName;
+        }
+
+        // Safe file check
+        if (req.file) {
+            const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+
+            const uploadRes = await cloudinary.uploader.upload(base64, {
+                folder: "profilePhoto",
+            });
+
+            if (!uploadRes?.secure_url) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Image upload failed"
+                });
+            }
+            updateData.profilePhoto = uploadRes.secure_url;
+        }
+
+        const user = await User.findByIdAndUpdate(
+            userId,
+            updateData,
+            { new: true, runValidators: true }
+        ).select('-password');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            user
+        });
+
+    } catch (error) {
+        console.error('Update Profile Error:', error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}

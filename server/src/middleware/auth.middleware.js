@@ -21,7 +21,7 @@ export const protectRoute = async (req, res, next) => {
         let decode;
         try {
             decode = jwt.verify(token, ENV.JWT_SECRET);
-            if (!decode || !decode.userID) {
+            if (!decode || !decode.userId) {
                 return res.status(401).json({
                     success: false,
                     message: "Invalid token payload"
@@ -37,7 +37,7 @@ export const protectRoute = async (req, res, next) => {
         }
 
         // setting up the req.user
-        const user = await User.findById(decode.userID).select("-password") // this will not add password of the user 
+        const user = await User.findById(decode.userId).select("-password") // this will not add password of the user 
         if (!user) {
             return res.status(401).json({
                 success: false,
