@@ -18,11 +18,19 @@ const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 // controller for creating a new course
 export const createCourse = async (req, res) => {
     try {
-        const { tittle, description, amount } = req.body;
-        if (!tittle || !description || !amount) {
-            return res.status(401).json({
+        const { title, description, amount } = req.body;
+        if (!title || !description || !amount) {
+            return res.status(400).json({
                 success: false,
                 message: "please provide all the details"
+            });
+        }
+
+        const price = Number(amount);
+        if (isNaN(price) || price < 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid amount",
             });
         }
 
@@ -34,22 +42,27 @@ export const createCourse = async (req, res) => {
             });
         }
 
-        let imageUrl = "";
         const base64 = `data:${req.file.mimetype};base64,${thumbnail.buffer.toString("base64")}`;
         const uploadRes = await cloudinary.uploader.upload(base64, {
             folder: "lms"
         });
-        imageUrl = uploadRes.secure_url;
 
-        const newCourse = new Course.create({
+        if (!uploadRes?.secure_url) {
+            return res.status(500).json({
+                success: false,
+                message: "Image upload failed",
+            });
+        }
+        const imageUrl = uploadRes.secure_url;
+
+        const newCourse = await Course.create({
             userId: req.user._id,
-            tittle,
+            title,
             description,
             thumbnail: imageUrl,
-            amount
+            amount: price
         });
 
-        await newCourse.save();
         return res.status(201).json({
             success: true,
             message: "Course Created Successfully",
