@@ -2,7 +2,7 @@
 
 import mongoose from "mongoose";
 import { Comment } from "../models/comment.model.js";
-import { Modules } from "../models/module.model.js";
+import { Modules } from "../models/modules.model.js";
 
 
 
