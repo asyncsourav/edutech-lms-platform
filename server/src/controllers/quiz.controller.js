@@ -3,8 +3,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import mongoose from "mongoose";
 import { Quiz } from "../models/quiz.model.js";
-import { Questions } from "../models/question.model.js";
-import { Modules } from "../models/module.model.js";
+import { Questions } from "../models/questions.model.js";
+import { Modules } from "../models/modules.model.js";
 import { ENV } from "../config/env.js";
 
 
