@@ -1,7 +1,7 @@
 
 
 import { User } from "../models/user.model.js";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ENV } from "../config/env.js";
 import cloudinary from "../config/cloudinary.js";
