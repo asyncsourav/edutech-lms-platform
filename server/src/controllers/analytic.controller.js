@@ -41,7 +41,7 @@ export const getAnalyticsDataController = async (req, res) => {
     try {
         const data = await getAnalyticsData();
         return res.status(200).json(data);
-        
+
     } catch (error) {
         console.error("Analytics error:", error);
         return res.status(500).json({
@@ -52,6 +52,46 @@ export const getAnalyticsDataController = async (req, res) => {
 };
 
 
+
+
+
+// get daily enrollment Data
+export const dailyEnrollmentData = async (startDate, endDate) => {
+    const dailyData = await Order.aggregate([
+        {
+            $match: {
+                createdAt: {
+                    $gte: startDate,
+                    $lte: endDate
+                }
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    $dateToString: {
+                        format: "%Y-%m-%d",
+                        date: "$createdAt"
+                    }
+                },
+                enrollments: { $sum: 1 },
+                revenue: { $sum: "$totalAmount" }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ]);
+
+    const dateArray = getDatesInRange(startDate, endDate);
+
+    return dateArray.map(date => {
+        const found = dailyData.find(item => item._id === date);
+        return {
+            date,
+            enrollments: found?.enrollments || 0,
+            revenue: found?.revenue || 0
+        };
+    });
+};
 
 
 
