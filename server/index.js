@@ -11,6 +11,8 @@ import courseRoute from "./src/routes/course.route.js";
 import moduleRoute from "./src/routes/module.route.js";
 import quizRoute from "./src/routes/quiz.route.js";
 import commentRoute from "./src/routes/comment.route.js";
+import paymentRoute from "./src/routes/payment.route.js";
+
 
 
 
@@ -32,6 +34,9 @@ app.use("/api", courseRoute);
 app.use("/api", moduleRoute);
 app.use('/api/quiz', quizRoute);
 app.use('/api/comment', commentRoute);
+
+app.use('/api/payment', paymentRoute);
+
 
 
 
