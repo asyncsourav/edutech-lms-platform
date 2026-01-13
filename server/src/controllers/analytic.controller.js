@@ -41,7 +41,7 @@ export const getAnalyticsDataController = async (req, res) => {
     try {
         const data = await getAnalyticsData();
         return res.status(200).json(data);
-
+        
     } catch (error) {
         console.error("Analytics error:", error);
         return res.status(500).json({
@@ -93,5 +93,20 @@ export const dailyEnrollmentData = async (startDate, endDate) => {
     });
 };
 
+
+
+
+// get the date in range 
+function getDatesInRange(startDate, endDate) {
+    const dates = [];
+    let current = new Date(startDate);
+
+    while (current <= endDate) {
+        dates.push(current.toISOString().split("T")[0]);
+        current.setDate(current.getDate() + 1);
+    }
+
+    return dates;
+}
 
 
