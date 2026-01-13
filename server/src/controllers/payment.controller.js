@@ -96,3 +96,75 @@ export const createCheckOutSession = async (req, res) => {
 
 
 
+// if the checkout is success
+export const checkoutSuccess = async (req, res) => {
+    try {
+        const { sessionId } = req.body;
+
+        if (!sessionId) {
+            return res.status(400).json({
+                success: false,
+                message: "Session ID is required",
+            });
+        }
+
+        const existingOrder = await Order.findOne({
+            stripeSessionId: sessionId,
+        });
+
+        if (existingOrder) {
+            return res.status(409).json({
+                success: false,
+                message: "Order already exists",
+            });
+        }
+
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        if (session.payment_status !== "paid") {
+            return res.status(400).json({
+                success: false,
+                message: "Payment not completed",
+            });
+        }
+
+        const { userId, courseId } = session.metadata;
+
+        // Create Order
+        const newOrder = await Order.create({
+            user: userId,
+            course: courseId,
+            totalAmount: session.amount_total / 100,
+            stripeSessionId: sessionId,
+        });
+
+        // Create Enrollment (ONE TIME)
+        await Enrollment.findOneAndUpdate(
+            { userId, courseId },
+            { userId, courseId, stripeSessionId: sessionId },
+            { upsert: true, new: true }
+        );
+
+        // Optional backward compatibility
+        await User.findByIdAndUpdate(
+            userId,
+            { $addToSet: { purchasedCourse: courseId } }
+        );
+
+        return res.status(201).json({
+            success: true,
+            message: "Payment successful",
+            orderId: newOrder._id,
+        });
+
+    } catch (error) {
+        console.log("checkoutSuccess error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
+
+
