@@ -1,7 +1,11 @@
+
+
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 
+
 export function ProtectedRoute({ children, adminOnly = false }) {
+
   const { user, loading, isAdmin } = useAuth();
 
   if (loading) {
