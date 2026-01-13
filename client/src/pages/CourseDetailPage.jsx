@@ -80,7 +80,7 @@ export function CourseDetailPage() {
   const handlePurchase = async () => {
     try {
       setPurchasing(true);
-      const response = await api.post('/checkout', {
+      const response = await api.post('/payment/checkout', {
         products: { _id: id },
       });
 
@@ -322,3 +322,4 @@ export function CourseDetailPage() {
     </div>
   );
 }
+

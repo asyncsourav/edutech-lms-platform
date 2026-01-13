@@ -48,7 +48,6 @@ export function CourseLearnPage() {
     if (!selectedModule?._id) return;
     try {
       const response = await api.get(`/getModule/${selectedModule._id}`);
-      setSelectedModule(response.data.module);
       setComments(response.data.module.comments || []);
     } catch (error) {
       console.error('Error fetching module:', error);
@@ -88,13 +87,22 @@ export function CourseLearnPage() {
 
   const handleGenerateQuiz = async () => {
     if (!selectedModule?._id) return;
+
     try {
       setQuizLoading(true);
-      await api.post('/quiz/generateQuiz', {
+
+      const response = await api.post('/quiz/generateQuiz', {
         moduleId: selectedModule._id,
         content: `${selectedModule.title} - ${course.title}`,
       });
+
       setHasQuiz(true);
+
+      setSelectedModule(prev => ({
+        ...prev,
+        quiz: response.data.quizId,
+      }));
+
       alert('Quiz generated successfully!');
     } catch (error) {
       alert(error.response?.data?.message || 'Failed to generate quiz');
@@ -102,6 +110,7 @@ export function CourseLearnPage() {
       setQuizLoading(false);
     }
   };
+
 
   if (loading) {
     return (
@@ -143,11 +152,10 @@ export function CourseLearnPage() {
                 <button
                   key={module._id}
                   onClick={() => setSelectedModule(module)}
-                  className={`w-full text-left p-3 rounded-md transition-colors ${
-                    selectedModule?._id === module._id
+                  className={`w-full text-left p-3 rounded-md transition-colors ${selectedModule?._id === module._id
                       ? 'bg-primary text-primary-foreground'
                       : 'hover:bg-accent'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-2">
                     <PlayCircle className="h-4 w-4" />

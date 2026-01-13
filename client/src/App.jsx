@@ -25,61 +25,59 @@ function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route 
-                path="/" 
+              <Route
+                path="/"
                 element={
                   <ProtectedRoute>
                     <DashboardPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/course/:id" 
+              <Route
+                path="/course/:id"
                 element={
                   <ProtectedRoute>
                     <CourseDetailPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/course/:id/learn" 
+              <Route
+                path="/course/:id/learn"
                 element={
                   <ProtectedRoute>
                     <CourseLearnPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/quiz/:id" 
+              <Route
+                path="/quiz/:id"
                 element={
                   <ProtectedRoute>
                     <QuizPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/profile" 
+              <Route
+                path="/profile"
                 element={
                   <ProtectedRoute>
                     <ProfilePage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/admin" 
+              <Route
+                path="/admin"
                 element={
                   <ProtectedRoute adminOnly>
                     <AdminDashboardPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/purchase" 
+              <Route
+                path="/purchase"
                 element={
-                  <ProtectedRoute>
-                    <PurchaseSuccessPage />
-                  </ProtectedRoute>
-                } 
+                  <PurchaseSuccessPage />
+                }
               />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

@@ -8,7 +8,7 @@ import { checkoutSuccess, createCheckOutSession } from "../controllers/payment.c
 const paymentRoute = express.Router();
 
 paymentRoute.post('/checkout', protectRoute, createCheckOutSession);
-paymentRoute.post('/checkout-success', protectRoute, checkoutSuccess);
+paymentRoute.post('/checkout-success', checkoutSuccess);
 
 
 export default paymentRoute;

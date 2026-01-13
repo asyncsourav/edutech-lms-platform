@@ -1,5 +1,3 @@
-
-
 import { Link } from 'react-router-dom';
 import { BookOpen, Mail, Github, Linkedin, Twitter, Heart } from 'lucide-react';
 

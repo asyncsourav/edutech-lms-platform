@@ -159,6 +159,7 @@ export const generateQuiz = async (req, res) => {
         return res.status(201).json({
             success: true,
             message: "Quiz generated successfully",
+            quizId: newQuiz._id,
         });
 
     } catch (error) {
