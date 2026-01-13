@@ -4,7 +4,7 @@ import api from '../lib/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { User, Upload } from 'lucide-react';
+import { User, Upload, CheckCircle2, Mail, UserCircle } from 'lucide-react';
 
 export function ProfilePage() {
   const { user, updateUser, loading: authLoading } = useAuth();
@@ -42,11 +42,8 @@ export function ProfilePage() {
         formData.append('profilePhoto', profilePhoto);
       }
 
-      const response = await api.post('/updateProfile', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      // Axios will automatically set Content-Type with boundary for FormData
+      const response = await api.post('/updateProfile', formData);
 
       if (response.data.success) {
         updateUser(response.data.user);
@@ -78,7 +75,12 @@ export function ProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-8">Profile Settings</h1>
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+          Profile Settings
+        </h1>
+        <p className="text-muted-foreground">Manage your account information and preferences</p>
+      </div>
 
       <Card>
         <CardHeader>
@@ -87,17 +89,22 @@ export function ProfilePage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex flex-col items-center gap-4">
-              <div className="relative">
+            <div className="flex flex-col items-center gap-6">
+              <div className="relative group">
                 {preview ? (
-                  <img
-                    src={preview}
-                    alt="Profile"
-                    className="w-32 h-32 rounded-full object-cover border-4 border-primary"
-                  />
+                  <div className="relative">
+                    <img
+                      src={preview}
+                      alt="Profile"
+                      className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-lg"
+                    />
+                    <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Upload className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
                 ) : (
-                  <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
-                    <User className="h-16 w-16 text-primary" />
+                  <div className="w-40 h-40 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center border-4 border-primary/30 shadow-lg">
+                    <User className="h-20 w-20 text-primary" />
                   </div>
                 )}
               </div>
@@ -108,15 +115,22 @@ export function ProfilePage() {
                   onChange={handleFileChange}
                   className="hidden"
                 />
-                <Button type="button" variant="outline" as="span">
+                <Button type="button" variant="outline" size="lg" as="span" className="shadow-md">
                   <Upload className="mr-2 h-4 w-4" />
-                  Upload Photo
+                  {profilePhoto ? 'Change Photo' : 'Upload Photo'}
                 </Button>
               </label>
+              {profilePhoto && (
+                <p className="text-sm text-green-600 flex items-center gap-1">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Photo selected
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">
+              <label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
+                <Mail className="h-4 w-4" />
                 Email
               </label>
               <Input
@@ -124,7 +138,7 @@ export function ProfilePage() {
                 type="email"
                 value={user?.email || ''}
                 disabled
-                className="bg-muted"
+                className="bg-muted h-11"
               />
               <p className="text-xs text-muted-foreground">
                 Email cannot be changed
@@ -132,7 +146,8 @@ export function ProfilePage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="fullName" className="text-sm font-medium">
+              <label htmlFor="fullName" className="text-sm font-medium flex items-center gap-2">
+                <UserCircle className="h-4 w-4" />
                 Full Name
               </label>
               <Input
@@ -141,11 +156,23 @@ export function ProfilePage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
+                className="h-11"
+                placeholder="Enter your full name"
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={updating}>
-              {updating ? 'Updating...' : 'Update Profile'}
+            <Button type="submit" className="w-full h-11" size="lg" disabled={updating}>
+              {updating ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Updating...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="mr-2 h-4 w-4" />
+                  Update Profile
+                </>
+              )}
             </Button>
           </form>
         </CardContent>
