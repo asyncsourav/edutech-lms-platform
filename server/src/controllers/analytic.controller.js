@@ -128,8 +128,8 @@ export const getDailyAnalyticsController = async (req, res) => {
         end.setHours(23, 59, 59, 999);
 
         const data = await dailyEnrollmentData(start, end);
-
         return res.status(200).json(data);
+
     } catch (error) {
         console.error("Daily analytics error:", error);
         return res.status(500).json({
