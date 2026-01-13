@@ -41,6 +41,8 @@ A comprehensive Learning Management System (LMS) backend built with Node.js, Exp
   - Quiz system with AI-generated questions
   - User progress tracking
 
+<br>
+
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -52,6 +54,8 @@ Before you begin, ensure you have the following installed:
 - **Cloudinary** account (for media storage) - [Sign up](https://cloudinary.com/)
 - **Stripe** account (for payments) - [Sign up](https://stripe.com/)
 - **Google AI Studio** account (for Gemini API) - [Get API Key](https://makersuite.google.com/app/apikey)
+
+<br>
 
 ## 🛠️ Installation
 
@@ -108,6 +112,8 @@ Before you begin, ensure you have the following installed:
 
    The server will start on `http://localhost:5000` (or the port specified in your `.env` file).
 
+<br>
+
 ## 📁 Project Structure
 
 ```
@@ -150,6 +156,8 @@ server/
 │       ├── payment.route.js
 │       └── analytic.route.js
 ```
+
+<br>
 
 ## 🔌 API Endpoints
 
@@ -246,6 +254,8 @@ server/
 - **Usage:** Hashing user passwords before storing in database
 - **Link:** https://www.npmjs.com/package/bcrypt
 
+<br>
+
 ### Authentication & Security
 
 #### [cookie-parser](https://github.com/expressjs/cookie-parser) (v1.4.7)
@@ -258,12 +268,16 @@ server/
 - **Usage:** Allowing frontend to make requests from different origins
 - **Link:** https://github.com/expressjs/cors
 
+<br>
+
 ### Payment Processing
 
 #### [Stripe](https://stripe.com/docs/api) (v20.1.2)
 - **Why:** Payment processing platform for secure transactions
 - **Usage:** Creating checkout sessions, handling payments, and managing orders
 - **Link:** https://stripe.com/docs/api
+
+<br>
 
 ### File Upload & Storage
 
@@ -282,12 +296,16 @@ server/
 - **Usage:** Direct upload of files to Cloudinary from Multer
 - **Link:** https://www.npmjs.com/package/multer-storage-cloudinary
 
+<br>
+
 ### AI Integration
 
 #### [@google/generative-ai](https://ai.google.dev/) (v0.24.1)
 - **Why:** Google's Generative AI SDK for Gemini models
 - **Usage:** AI-powered course search and automatic quiz generation
 - **Link:** https://ai.google.dev/
+
+<br>
 
 ### Development Tools
 
@@ -301,6 +319,8 @@ server/
 - **Usage:** Development server auto-reload
 - **Link:** https://nodemon.io/
 
+<br>
+
 ## 🔐 Security Features
 
 - **Password Hashing:** All passwords are hashed using bcrypt with salt rounds of 10
@@ -309,6 +329,8 @@ server/
 - **Input Validation:** Request validation for all endpoints
 - **Secure Cookies:** Cookies configured with httpOnly, secure (in production), and sameSite flags
 - **CORS Protection:** Configured CORS to allow only trusted origins
+
+<br>
 
 ## 🧪 Testing
 
@@ -321,6 +343,8 @@ npm install --save-dev jest supertest
 # Run tests
 npm test
 ```
+
+<br>
 
 ## 🚀 Deployment
 
@@ -345,6 +369,8 @@ npm test
    - Set up connection pooling
 
 
+<br>
+
 ## 📝 Environment Variables Reference
 
 | Variable | Description | Required | Example |
@@ -362,6 +388,8 @@ npm test
 | `GEMINI_API_KEY` | Google Gemini API key | Yes | `your-gemini-key` |
 | `NODE_ENV` | Environment mode | No | `development` or `production` |
 
+<br>
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -370,6 +398,7 @@ npm test
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+<br>
 
 ## 👤 Author
 
@@ -382,6 +411,8 @@ npm test
 - Stripe for payment processing
 - Cloudinary for media management
 - Google for Gemini AI capabilities
+
+<br>
 
 ## 📞 Support
 
