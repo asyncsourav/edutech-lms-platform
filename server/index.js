@@ -1,4 +1,5 @@
 
+
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -12,6 +13,7 @@ import moduleRoute from "./src/routes/module.route.js";
 import quizRoute from "./src/routes/quiz.route.js";
 import commentRoute from "./src/routes/comment.route.js";
 import paymentRoute from "./src/routes/payment.route.js";
+import analyticRoute from "./src/routes/analytic.route.js";
 
 
 
@@ -32,19 +34,19 @@ app.use(cors({
 app.use("/api", userRoute);
 app.use("/api", courseRoute);
 app.use("/api", moduleRoute);
-app.use('/api/quiz', quizRoute);
-app.use('/api/comment', commentRoute);
+app.use("/api/quiz", quizRoute);
+app.use("/api/comment", commentRoute);
 
-app.use('/api/payment', paymentRoute);
-
-
-
+app.use("/api/payment", paymentRoute);
+app.use("/api/analytic", analyticRoute);
 
 
-// connect db and starting server
+
+
+// connect db then starting server
 connectDB()
     .then(() => {
-        // starting server after db connection 
+        // starting server after db is connected 
         app.listen(ENV.PORT, () => {
             console.log(`Server running on port ${ENV.PORT}`);
         });
