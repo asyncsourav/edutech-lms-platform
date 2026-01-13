@@ -6,14 +6,11 @@ import { ENV } from "./env.js";
 const connectDB = async () => {
     try {
         await mongoose.connect(ENV.MONGO_URI);
-        console.log("Datbase connected successfully");
+        console.log("Database connected successfully");
 
     } catch (error) {
         console.log("error from connectDB ", error.message);
-        res.status(404).json({
-            success: false,
-            message: "error while connecting to database",
-        })
+        throw error; // Throw error instead of using res (which doesn't exist here)
     }
 }
 
