@@ -1,11 +1,15 @@
+
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from './api';
+
 
 // Create Auth Context
 const AuthContext = createContext();
 
 // Custom hook to use auth context
 export function useAuth() {
+
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within AuthProvider');
@@ -15,6 +19,7 @@ export function useAuth() {
 
 // Auth Provider Component
 export function AuthProvider({ children }) {
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,9 +29,11 @@ export function AuthProvider({ children }) {
       const response = await api.get('/getUser');
       setUser(response.data);
       return response.data;
+
     } catch (error) {
       setUser(null);
       return null;
+
     } finally {
       setLoading(false);
     }
@@ -35,16 +42,19 @@ export function AuthProvider({ children }) {
   // Check if user is admin
   const isAdmin = user?.email === import.meta.env.VITE_ADMIN_EMAIL;
 
+
   // Login function
   const login = async (email, password) => {
     try {
       const response = await api.post('/login', { email, password });
+      
       if (response.data.success) {
         // Fetch user data after login
         const userData = await fetchUser();
         return { success: true, user: userData };
       }
       return { success: false, message: response.data.message };
+  
     } catch (error) {
       return { 
         success: false, 
@@ -53,16 +63,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+
   // Register function
   const register = async (fullName, email, password) => {
     try {
       const response = await api.post('/register', { fullName, email, password });
+      
       if (response.data.success) {
         // Fetch user data after registration
         const userData = await fetchUser();
         return { success: true, user: userData };
       }
       return { success: false, message: response.data.message };
+    
     } catch (error) {
       return { 
         success: false, 
@@ -71,12 +84,15 @@ export function AuthProvider({ children }) {
     }
   };
 
+
   // Logout function
   const logout = async () => {
     try {
+      
       await api.post('/logout');
       setUser(null);
       return { success: true };
+    
     } catch (error) {
       console.error('Logout error:', error);
       // Even if logout fails, clear user state
@@ -85,15 +101,18 @@ export function AuthProvider({ children }) {
     }
   };
 
+
   // Update user function
   const updateUser = (userData) => {
     setUser(userData);
   };
 
+
   // Fetch user on mount
   useEffect(() => {
     fetchUser();
   }, []);
+
 
   const value = {
     user,
@@ -106,6 +125,7 @@ export function AuthProvider({ children }) {
     updateUser,
   };
 
+  
   return (
     <AuthContext.Provider value={value}>
       {children}
