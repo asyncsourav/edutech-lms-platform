@@ -1,3 +1,5 @@
+
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../lib/theme';
 import { useAuth } from '../../lib/auth';
@@ -5,6 +7,7 @@ import { Moon, Sun, LogOut, User, Home, GraduationCap } from 'lucide-react';
 import { Button } from '../ui/button';
 
 export function Header() {
+
   const { theme, toggleTheme } = useTheme();
   const { user, loading, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -16,9 +19,9 @@ export function Header() {
 
   if (loading) {
     return (
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="text-xl font-bold flex items-center gap-2">
+      <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-[1200px] items-center px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 text-lg font-semibold">
             <GraduationCap className="h-6 w-6 text-primary" />
             LMS Platform
           </div>
@@ -27,15 +30,22 @@ export function Header() {
     );
   }
 
+
+
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="text-xl font-bold flex items-center gap-2 hover:text-primary transition-colors">
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-lg font-semibold transition-colors hover:text-primary"
+        >
           <GraduationCap className="h-6 w-6 text-primary" />
           <span>LMS Platform</span>
         </Link>
 
-        <nav className="flex items-center gap-3">
+        {/* Navigation */}
+        <nav className="flex items-center gap-2 sm:gap-3">
           {user ? (
             <>
               <Link to="/">
@@ -43,47 +53,80 @@ export function Header() {
                   <Home className="h-5 w-5" />
                 </Button>
               </Link>
+
               {isAdmin && (
                 <Link to="/admin">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="hidden sm:flex">
                     <User className="mr-2 h-4 w-4" />
                     Admin
                   </Button>
                 </Link>
               )}
+
               <Link to="/profile">
-                <div className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-accent transition-colors cursor-pointer">
+                <div className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-accent transition-colors">
                   {user.profilePhoto ? (
                     <img
                       src={user.profilePhoto}
                       alt={user.fullName}
-                      className="w-8 h-8 rounded-full object-cover border-2 border-primary"
+                      className="h-8 w-8 rounded-full object-cover border border-primary"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
                       <User className="h-4 w-4 text-primary" />
                     </div>
                   )}
-                  <span className="text-sm font-medium hidden md:block">{user.fullName}</span>
+                  <span className="hidden text-sm font-medium md:block">
+                    {user.fullName}
+                  </span>
                 </div>
               </Link>
-              <Button variant="ghost" size="icon" onClick={toggleTheme} title="Toggle theme">
-                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                title="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
               </Button>
-              <Button variant="ghost" size="icon" onClick={handleLogout} title="Logout">
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleLogout}
+                title="Logout"
+              >
                 <LogOut className="h-5 w-5" />
               </Button>
             </>
           ) : (
             <>
-              <Button variant="ghost" size="icon" onClick={toggleTheme} title="Toggle theme">
-                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                title="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
               </Button>
+
               <Link to="/login">
-                <Button variant="outline">Login</Button>
+                <Button variant="outline" size="sm">
+                  Login
+                </Button>
               </Link>
+
               <Link to="/register">
-                <Button>Sign Up</Button>
+                <Button size="sm">Sign Up</Button>
               </Link>
             </>
           )}
@@ -92,3 +135,4 @@ export function Header() {
     </header>
   );
 }
+

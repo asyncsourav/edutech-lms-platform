@@ -1,8 +1,13 @@
+
+
 import { Link } from 'react-router-dom';
 import { BookOpen, Mail, Github, Linkedin, Twitter, Heart } from 'lucide-react';
 
+
 export function Footer() {
+
   const currentYear = new Date().getFullYear();
+
 
   return (
     <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mt-auto">
