@@ -1,17 +1,37 @@
-import { useState, useEffect } from 'react';
+
+
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../lib/auth';
 import api from '../lib/api';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { User, Upload, CheckCircle2, Mail, UserCircle } from 'lucide-react';
+import {
+  User,
+  Upload,
+  CheckCircle2,
+  Mail,
+  UserCircle,
+} from 'lucide-react';
+
+
 
 export function ProfilePage() {
+  
   const { user, updateUser, loading: authLoading } = useAuth();
+
   const [updating, setUpdating] = useState(false);
   const [fullName, setFullName] = useState('');
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [preview, setPreview] = useState('');
+
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (user) {
@@ -22,27 +42,31 @@ export function ProfilePage() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setProfilePhoto(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+
+    setProfilePhoto(file);
+
+    // Preview image
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       setUpdating(true);
+
       const formData = new FormData();
       formData.append('fullName', fullName);
+
       if (profilePhoto) {
         formData.append('profilePhoto', profilePhoto);
       }
 
-      // Axios will automatically set Content-Type with boundary for FormData
       const response = await api.post('/updateProfile', formData);
 
       if (response.data.success) {
@@ -73,13 +97,18 @@ export function ProfilePage() {
     );
   }
 
+  
+  
+  
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
           Profile Settings
         </h1>
-        <p className="text-muted-foreground">Manage your account information and preferences</p>
+        <p className="text-muted-foreground">
+          Manage your account information and preferences
+        </p>
       </div>
 
       <Card>
@@ -87,39 +116,45 @@ export function ProfilePage() {
           <CardTitle>Profile Information</CardTitle>
           <CardDescription>Update your profile information</CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Profile Photo */}
             <div className="flex flex-col items-center gap-6">
-              <div className="relative group">
+              <div className="relative">
                 {preview ? (
-                  <div className="relative">
-                    <img
-                      src={preview}
-                      alt="Profile"
-                      className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-lg"
-                    />
-                    <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Upload className="h-8 w-8 text-white" />
-                    </div>
-                  </div>
+                  <img
+                    src={preview}
+                    alt="Profile"
+                    className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-lg"
+                  />
                 ) : (
                   <div className="w-40 h-40 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center border-4 border-primary/30 shadow-lg">
                     <User className="h-20 w-20 text-primary" />
                   </div>
                 )}
               </div>
-              <label className="cursor-pointer">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-                <Button type="button" variant="outline" size="lg" as="span" className="shadow-md">
-                  <Upload className="mr-2 h-4 w-4" />
-                  {profilePhoto ? 'Change Photo' : 'Upload Photo'}
-                </Button>
-              </label>
+
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
+              {/* REAL working button */}
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                onClick={() => fileInputRef.current.click()}
+              >
+                <Upload className="mr-2 h-4 w-4" />
+                {profilePhoto ? 'Change Photo' : 'Upload Photo'}
+              </Button>
+
               {profilePhoto && (
                 <p className="text-sm text-green-600 flex items-center gap-1">
                   <CheckCircle2 className="h-4 w-4" />
@@ -128,15 +163,15 @@ export function ProfilePage() {
               )}
             </div>
 
+            {/* Email */}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
+              <label className="text-sm font-medium flex items-center gap-2">
                 <Mail className="h-4 w-4" />
                 Email
               </label>
               <Input
-                id="email"
                 type="email"
-                value={user?.email || ''}
+                value={user.email}
                 disabled
                 className="bg-muted h-11"
               />
@@ -145,13 +180,13 @@ export function ProfilePage() {
               </p>
             </div>
 
+            {/* Full Name */}
             <div className="space-y-2">
-              <label htmlFor="fullName" className="text-sm font-medium flex items-center gap-2">
+              <label className="text-sm font-medium flex items-center gap-2">
                 <UserCircle className="h-4 w-4" />
                 Full Name
               </label>
               <Input
-                id="fullName"
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -161,10 +196,16 @@ export function ProfilePage() {
               />
             </div>
 
-            <Button type="submit" className="w-full h-11" size="lg" disabled={updating}>
+            {/* Submit */}
+            <Button
+              type="submit"
+              className="w-full h-11"
+              size="lg"
+              disabled={updating}
+            >
               {updating ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                   Updating...
                 </>
               ) : (
@@ -180,4 +221,5 @@ export function ProfilePage() {
     </div>
   );
 }
+
 

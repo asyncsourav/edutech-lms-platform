@@ -23,10 +23,10 @@ export function Footer() {
               Your gateway to quality online learning. Master new skills with our comprehensive courses.
             </p>
             <div className="flex gap-4">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://github.com" target="https://github.com/sourav-357" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Github className="h-5 w-5" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://linkedin.com" target="https://www.linkedin.com/in/sourav-kumar-04a724399/" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin className="h-5 w-5" />
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
@@ -111,7 +111,7 @@ export function Footer() {
             © {currentYear} LMS Platform. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with <Heart className="h-4 w-4 text-red-500 fill-red-500" /> by Sourav Kumar
+            Made by <a href="https://t.me/sourav_1976">Sourav Kumar</a> 
           </p>
         </div>
       </div>
