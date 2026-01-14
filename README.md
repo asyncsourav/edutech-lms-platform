@@ -3,34 +3,11 @@
 This project is a **production-oriented Learning Management System (LMS)** designed to closely resemble **real-world edtech platforms**. It focuses on **scalability, security, and maintainable architecture**, rather than UI animations or demo-only features.
 
 
-
 ## 🎯 Overview
 
 The system supports **role-based users**, **secure payments**, **AI-powered learning tools**, and **analytics**, making it suitable for **startup-grade applications and paid full-stack internships**.
 
-### 🧠 Why This Project Matters
-
-Most LMS demo projects stop at basic CRUD operations.  
-This platform goes significantly further by implementing **complete business workflows**, including:
-
-- Secure **authentication & authorization** using JWT + httpOnly cookies
-- **Stripe-based payment flow** with backend verification and atomic enrollment creation
-- **AI-powered features** (course search & quiz generation) using Google Gemini
-- **Admin analytics dashboard** for tracking users, revenue, and enrollments
-- **Cloud-based media handling** for images and video content
-- Modular, scalable **REST API architecture**
-
 This project was built with a **backend-first, production mindset**, prioritizing correctness, security, and extensibility.
-
-
-### 🏗️ Architecture Highlights
-
-- **Decoupled frontend & backend** for independent scaling
-- **Role-Based Access Control (RBAC)** enforced at API and UI level
-- **Atomic operations** for payments and enrollments
-- **Stateless authentication** using JWT
-- **Centralized middleware** for authentication, authorization, and uploads
-- **AI features isolated behind service layers** to control cost and complexity
 
 ---
 
