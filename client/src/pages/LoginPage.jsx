@@ -8,9 +8,6 @@ import { GraduationCap, Mail, Lock, LogIn, Sparkles } from 'lucide-react';
 
 export function LoginPage() {
 
-  console.log('API_URL:', import.meta.env.VITE_API_URL);
-  console.log('Full baseURL:', `${import.meta.env.VITE_API_URL}/api`);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
