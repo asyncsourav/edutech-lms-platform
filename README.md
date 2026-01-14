@@ -11,13 +11,6 @@ This project was built with a **backend-first, production mindset**, prioritizin
 
 ---
 
-⚠️ **Note on UI**  
-The UI is intentionally kept clean and minimal.  
-The primary focus of this project is **feature completeness, system design, and real-world workflows**, not visual experimentation.
-
-For a deeper understanding of architectural decisions, see **`SYSTEM_DESIGN.md`**.
-
----
 
 ## ✨ Features
 
