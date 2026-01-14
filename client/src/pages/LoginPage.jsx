@@ -7,6 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { GraduationCap, Mail, Lock, LogIn, Sparkles } from 'lucide-react';
 
 export function LoginPage() {
+
+  console.log('API_URL:', import.meta.env.VITE_API_URL);
+  console.log('Full baseURL:', `${import.meta.env.VITE_API_URL}/api`);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,7 +24,7 @@ export function LoginPage() {
     setLoading(true);
 
     const result = await login(email, password);
-    
+
     if (result.success) {
       if (result.user?.email === import.meta.env.VITE_ADMIN_EMAIL) {
         navigate('/admin');
@@ -30,7 +34,7 @@ export function LoginPage() {
     } else {
       setError(result.message || 'Login failed. Please try again.');
     }
-    
+
     setLoading(false);
   };
 
@@ -61,7 +65,7 @@ export function LoginPage() {
                   {error}
                 </div>
               )}
-              
+
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
                   <Mail className="h-4 w-4" />
@@ -77,7 +81,7 @@ export function LoginPage() {
                   className="h-11"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <label htmlFor="password" className="text-sm font-medium flex items-center gap-2">
                   <Lock className="h-4 w-4" />
@@ -93,7 +97,7 @@ export function LoginPage() {
                   className="h-11"
                 />
               </div>
-              
+
               <Button type="submit" className="w-full h-11" disabled={loading}>
                 {loading ? (
                   <>
@@ -107,7 +111,7 @@ export function LoginPage() {
                   </>
                 )}
               </Button>
-              
+
               <p className="text-center text-sm text-muted-foreground">
                 Don't have an account?{' '}
                 <Link to="/register" className="text-primary hover:underline font-medium">
