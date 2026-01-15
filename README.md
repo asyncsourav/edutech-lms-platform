@@ -379,63 +379,12 @@ LMS platform project/
 
 ---
 
-## 🚀 Deployment
-
-### Production Checklist
-
-#### Backend
-- [ ] Set `NODE_ENV=production`
-- [ ] Use production MongoDB (Atlas)
-- [ ] Strong `JWT_SECRET` (32+ characters)
-- [ ] Live Stripe keys
-- [ ] Production Cloudinary credentials
-- [ ] Set `CLIENT_URL` to production frontend URL
-- [ ] Enable HTTPS
-- [ ] Configure CORS for production domain
-
-#### Frontend
-- [ ] Set `VITE_API_URL` to production backend URL
-- [ ] Set `VITE_ADMIN_EMAIL` to match backend
-- [ ] Build: `npm run build`
-- [ ] Deploy `dist` folder to hosting (Vercel, Netlify, etc.)
-- [ ] Configure SPA routing (all routes → `index.html`)
-
-### Deployment Platforms
-
-**Backend:**
-- Railway, Render, Heroku, AWS EC2, DigitalOcean
-
-**Frontend:**
-- Vercel (recommended), Netlify, AWS S3+CloudFront
-
-See detailed deployment guide in `server/README.md` and `client/README.md`.
-
----
-
 ## 📚 Documentation
 
 - **Backend API**: See `server/README.md`
 - **Frontend Guide**: See `client/README.md`
 - **Frontend Deep Dive**: See `client/FRONTEND_EXPLAINED.md`
 - **Integration Checklist**: See `client/BACKEND_INTEGRATION_CHECKLIST.md`
-
----
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-
-- [ ] User registration and login
-- [ ] Course browsing and search
-- [ ] Course purchase flow
-- [ ] Video playback
-- [ ] Comment system
-- [ ] Quiz generation and taking
-- [ ] Profile updates
-- [ ] Admin course creation
-- [ ] Admin analytics
-- [ ] Theme toggle
-- [ ] Responsive design
 
 ---
 
@@ -472,20 +421,7 @@ This project is licensed under the ISC License.
 **Sourav Kumar**
 
 - Email: xsouravkumar357@gmail.com
-- GitHub: [Your GitHub](https://github.com)
-- LinkedIn: [Your LinkedIn](https://linkedin.com)
-
----
-
-## 🙏 Acknowledgments
-
-- Express.js community
-- React team
-- MongoDB for excellent database solution
-- Stripe for payment processing
-- Cloudinary for media management
-- Google for Gemini AI capabilities
-- All open-source contributors
+- GitHub: [Click here](https://github.com/sourav-357)
 
 ---
 
@@ -495,21 +431,4 @@ For support, email xsouravkumar357@gmail.com or open an issue in the repository.
 
 ---
 
-## 🎓 Learning Resources
-
-This project demonstrates:
-- Full-stack MERN development
-- RESTful API design
-- Authentication and authorization
-- Payment integration
-- AI integration
-- File uploads and storage
-- State management
-- Responsive UI design
-- Production deployment
-
-Perfect for portfolio projects and learning modern web development!
-
----
-
-**Built with ❤️ using the MERN Stack**
+**Built with ❤️ using the MERN Stack by **Sourav Kumar****
