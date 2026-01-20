@@ -9,6 +9,8 @@ The system supports **role-based users**, **secure payments**, **AI-powered lear
 
 This project was built with a **backend-first, production mindset**, prioritizing correctness, security, and extensibility.
 
+
+
 ---
 
 
