@@ -146,22 +146,6 @@ export function CourseLearnPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-20 z-40">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/dashboard">
-            <Button variant="ghost" className="gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Courses
-            </Button>
-          </Link>
-          <div className="text-center">
-            <h2 className="font-semibold text-slate-900 dark:text-white">{course.title}</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Module {currentModuleIndex + 1} of {totalModules}</p>
-          </div>
-          <div className="w-24" /> {/* Spacer for alignment */}
-        </div>
-      </div>
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
