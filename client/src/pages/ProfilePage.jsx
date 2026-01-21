@@ -23,7 +23,7 @@ import {
 
 
 export function ProfilePage() {
-  
+
   const { user, updateUser, loading: authLoading } = useAuth();
 
   const [updating, setUpdating] = useState(false);
@@ -97,13 +97,13 @@ export function ProfilePage() {
     );
   }
 
-  
-  
-  
+
+
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
           Profile Settings
         </h1>
         <p className="text-muted-foreground">
@@ -129,8 +129,8 @@ export function ProfilePage() {
                     className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-lg"
                   />
                 ) : (
-                  <div className="w-40 h-40 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center border-4 border-primary/30 shadow-lg">
-                    <User className="h-20 w-20 text-primary" />
+                  <div className="w-40 h-40 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 flex items-center justify-center border-4 border-blue-300 dark:border-blue-700/30 shadow-lg">
+                    <User className="h-20 w-20 text-blue-600 dark:text-blue-400" />
                   </div>
                 )}
               </div>

@@ -20,6 +20,7 @@ import {
   Sparkles,
   TrendingUp,
   Users,
+  ChevronRight,
 } from 'lucide-react';
 
 
@@ -72,163 +73,188 @@ export function DashboardPage() {
 
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 animate-fade-in">
       {/* HERO */}
-      <section className="text-center space-y-4">
-        <div className="flex items-center justify-center gap-3">
-          <GraduationCap className="h-10 w-10 text-primary" />
-          <h1 className="text-3xl md:text-4xl font-semibold">
-            Explore Courses
-          </h1>
-        </div>
-
-        <p className="text-muted-foreground max-w-2xl mx-auto text-base">
-          Learn in-demand skills with structured, industry-focused courses.
-        </p>
-
-        {user && (
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <Users className="h-4 w-4" />
-            <span>Welcome back, {user.fullName}</span>
+      <section className="hero-section hero-section-dark p-8 md:p-12">
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-white/20 rounded-lg">
+              <GraduationCap className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold">
+              Explore Courses
+            </h1>
           </div>
-        )}
+
+          <p className="text-white/90 max-w-2xl text-lg">
+            Learn in-demand skills with structured, industry-focused courses taught by industry experts.
+          </p>
+
+          {user && (
+            <div className="flex items-center gap-2 text-white/80 pt-4">
+              <Users className="h-5 w-5" />
+              <span className="font-medium">Welcome back, {user.fullName}! 👋</span>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* STATS */}
       {!loading && courses.length > 0 && (
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="shadow-sm">
-            <CardContent className="p-6 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Courses</p>
-                <p className="text-2xl font-semibold">{courses.length}</p>
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Courses</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50 mt-2">{courses.length}</p>
               </div>
-              <BookOpen className="h-8 w-8 text-primary" />
-            </CardContent>
-          </Card>
+              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <BookOpen className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+          </div>
 
-          <Card className="shadow-sm">
-            <CardContent className="p-6 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">My Courses</p>
-                <p className="text-2xl font-semibold">
-                  {purchasedCourses.length}
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">My Courses</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50 mt-2">{purchasedCourses.length}</p>
+              </div>
+              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <GraduationCap className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Learning Path</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50 mt-2 flex items-center gap-2">
+                  Personalized
                 </p>
               </div>
-              <GraduationCap className="h-8 w-8 text-primary" />
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-sm">
-            <CardContent className="p-6 flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Platform</p>
-                <p className="text-2xl font-semibold flex items-center gap-1">
-                  AI Powered <Sparkles className="h-4 w-4 text-primary" />
-                </p>
+              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <Sparkles className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               </div>
-              <TrendingUp className="h-8 w-8 text-primary" />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
 
       {/* SEARCH */}
       <section>
         <form onSubmit={handleSearch}>
-          <Card className="p-4 shadow-sm">
+          <div className="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 p-6">
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search courses (MERN, AI, DevOps...)"
-                  className="pl-10 h-11"
+                  placeholder="Search courses (MERN Stack, AI, DevOps, Mobile Development...)"
+                  className="pl-11 h-12 text-base rounded-lg border-slate-200 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400"
                 />
               </div>
-              <Button type="submit" className="h-11 px-6">
+              <Button type="submit" className="h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+                <Search className="h-4 w-4 mr-2" />
                 Search
               </Button>
             </div>
-          </Card>
+          </div>
         </form>
       </section>
 
       {/* CONTENT */}
       {loading ? (
         <div className="text-center py-20">
-          <div className="h-10 w-10 mx-auto animate-spin rounded-full border-b-2 border-primary mb-4" />
-          <p className="text-muted-foreground">Loading courses...</p>
+          <div className="inline-flex items-center justify-center">
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 dark:border-slate-700 border-b-blue-600" />
+          </div>
+          <p className="text-slate-600 dark:text-slate-400 mt-4 text-lg">Loading amazing courses...</p>
         </div>
       ) : courses.length === 0 ? (
-        <Card className="py-16 shadow-sm">
-          <CardContent className="text-center space-y-2">
-            <BookOpen className="h-12 w-12 mx-auto text-muted-foreground" />
-            <h3 className="text-lg font-medium">No courses found</h3>
-            <p className="text-sm text-muted-foreground">
-              Try searching with different keywords.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-16 text-center">
+          <BookOpen className="h-16 w-16 mx-auto text-slate-300 dark:text-slate-700 mb-4" />
+          <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-2">No courses found</h3>
+          <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+            Try searching with different keywords or explore all available courses.
+          </p>
+        </div>
       ) : (
-        <section className="space-y-6">
-          <h2 className="text-xl font-medium">
-            Available Courses ({courses.length})
-          </h2>
+        <section className="space-y-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+              Available Courses
+              <span className="ml-3 inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-semibold">
+                {courses.length}
+              </span>
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((course) => (
-              <Card
+            {courses.map((course, idx) => (
+              <div
                 key={course._id}
-                className="flex flex-col shadow-sm hover:shadow-md transition"
+                className="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 flex flex-col"
+                style={{ animationDelay: `${idx * 50}ms` }}
               >
-                <img
-                  src={course.thumbnail || '/placeholder-course.jpg'}
-                  alt={course.title}
-                  className="h-44 w-full object-cover rounded-t-xl"
-                />
-
-                <CardHeader className="space-y-1">
-                  <CardTitle className="text-base line-clamp-2">
-                    {course.title}
-                  </CardTitle>
-                  <CardDescription className="line-clamp-3">
-                    {course.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="flex items-center justify-between">
-                  <div className="flex items-center gap-1 font-semibold">
-                    <IndianRupee className="h-4 w-4" />
-                    {course.amount}
-                  </div>
-                  {course.modules && (
-                    <span className="text-xs text-muted-foreground">
-                      {course.modules.length} modules
-                    </span>
+                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-slate-100 dark:from-blue-900/20 dark:to-slate-900">
+                  {course.thumbnail ? (
+                    <img
+                      src={course.thumbnail}
+                      alt={course.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <BookOpen className="h-16 w-16 text-slate-300 dark:text-slate-700" />
+                    </div>
                   )}
-                </CardContent>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </div>
 
-                <CardFooter>
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="font-bold text-lg line-clamp-2 mb-2 text-slate-900 dark:text-slate-50">
+                    {course.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-4 flex-1">
+                    {course.description}
+                  </p>
+
+                  <div className="flex items-center justify-between mb-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center gap-1 font-bold text-lg text-blue-600 dark:text-blue-400">
+                      <IndianRupee className="h-5 w-5" />
+                      {course.amount}
+                    </div>
+                    {course.modules && (
+                      <span className="text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+                        {course.modules.length} modules
+                      </span>
+                    )}
+                  </div>
+
                   {isPurchased(course._id) ? (
                     <Link
                       to={`/course/${course._id}/learn`}
-                      className="w-full"
+                      className="block"
                     >
-                      <Button className="w-full">
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg flex items-center justify-center gap-2 transition-all">
+                        <GraduationCap className="h-4 w-4" />
                         Continue Learning
+                        <ChevronRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   ) : (
-                    <Link to={`/course/${course._id}`} className="w-full">
-                      <Button className="w-full" variant="outline">
-                        View Details
+                    <Link to={`/course/${course._id}`} className="block">
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg flex items-center justify-center gap-2 transition-all">
+                        Explore
+                        <ChevronRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   )}
-                </CardFooter>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </section>

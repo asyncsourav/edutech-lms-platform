@@ -85,13 +85,33 @@ export const createCourse = async (req, res) => {
 
 
 // controller for getting the data of the all matching course 
+// GET ALL COURSES FOR ADMIN (includes hidden courses)
+export const getAllCourses = async (req, res) => {
+    try {
+        // Admin gets ALL courses including hidden ones
+        const courses = await Course.find().lean();
+        return res.status(200).json({
+            success: true,
+            courses,
+            count: courses.length,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch courses"
+        });
+    }
+};
+
+// GET COURSES FOR USERS (filters hidden courses)
 export const getCourse = async (req, res) => {
     try {
         const { search } = req.query;
 
-        // If no search → return all courses
+        // If no search → return all courses that are not hidden
         if (!search || search.trim() === "") {
-            const courses = await Course.find().lean();
+            const courses = await Course.find({ isHidden: false }).lean();
             return res.status(200).json({
                 success: true,
                 courses,
@@ -123,6 +143,7 @@ export const getCourse = async (req, res) => {
         // Escape regex
         const safeSearch = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const courses = await Course.find({
+            isHidden: false,
             $or: [
                 { title: { $regex: safeSearch, $options: "i" } },
                 { description: { $regex: safeSearch, $options: "i" } },
@@ -262,6 +283,183 @@ export const getAllPurchasedCourse = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Internal server error",
+        });
+    }
+};
+
+// controller for editing a course
+export const editCourse = async (req, res) => {
+    try {
+        const { id: courseId } = req.params;
+        const { title, description, amount } = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid course ID",
+            });
+        }
+
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        // Verify ownership
+        if (course.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to edit this course",
+            });
+        }
+
+        // Update fields
+        if (title) course.title = title;
+        if (description) course.description = description;
+        if (amount) {
+            const price = Number(amount);
+            if (isNaN(price) || price < 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid amount",
+                });
+            }
+            course.amount = price;
+        }
+
+        // Handle thumbnail if provided
+        if (req.file) {
+            const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+            const uploadRes = await cloudinary.uploader.upload(base64, {
+                folder: "lms"
+            });
+
+            if (uploadRes?.secure_url) {
+                course.thumbnail = uploadRes.secure_url;
+            }
+        }
+
+        await course.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Course updated successfully",
+            course,
+        });
+
+    } catch (error) {
+        console.log("Error in editing course:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to edit course",
+        });
+    }
+};
+
+// controller for hiding a course
+export const hideCourse = async (req, res) => {
+    try {
+        const { id: courseId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid course ID",
+            });
+        }
+
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        // Verify ownership
+        if (course.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to hide this course",
+            });
+        }
+
+        course.isHidden = !course.isHidden;
+        await course.save();
+
+        return res.status(200).json({
+            success: true,
+            message: course.isHidden ? "Course hidden successfully" : "Course unhidden successfully",
+            course,
+        });
+
+    } catch (error) {
+        console.log("Error in hiding course:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to hide/unhide course",
+        });
+    }
+};
+
+// controller for deleting a course
+export const deleteCourse = async (req, res) => {
+    try {
+        const { id: courseId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid course ID",
+            });
+        }
+
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found",
+            });
+        }
+
+        // Verify ownership
+        if (course.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to delete this course",
+            });
+        }
+
+        // Delete thumbnail from Cloudinary if it exists
+        if (course.thumbnail) {
+            try {
+                const urlParts = course.thumbnail.split('/');
+                const filename = urlParts[urlParts.length - 1].split('.')[0];
+                await cloudinary.uploader.destroy(`lms/${filename}`);
+            } catch (cloudinaryError) {
+                console.log("Failed to delete thumbnail from Cloudinary:", cloudinaryError);
+            }
+        }
+
+        // Delete all enrollments for this course
+        await Enrollment.deleteMany({ courseId });
+
+        // Delete the course
+        await Course.findByIdAndDelete(courseId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Course deleted successfully",
+        });
+
+    } catch (error) {
+        console.log("Error in deleting course:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete course",
         });
     }
 };

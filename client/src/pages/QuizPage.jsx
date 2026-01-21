@@ -105,19 +105,16 @@ export function QuizPage() {
                         key={option}
                         onClick={() => handleAnswerSelect(question._id, option)}
                         disabled={submitted}
-                        className={`w-full text-left p-3 rounded-md border transition-colors ${
-                          isSelected
-                            ? 'border-primary bg-primary/10'
+                        className={`w-full text-left p-3 rounded-md border transition-colors ${isSelected
+                            ? 'border-blue-500 bg-blue-500/10'
                             : 'border-border hover:bg-accent'
-                        } ${
-                          showCorrect
-                            ? 'border-green-500 bg-green-500/10'
+                          } ${showCorrect
+                            ? 'border-blue-500 bg-blue-500/10'
                             : ''
-                        } ${
-                          showIncorrect
+                          } ${showIncorrect
                             ? 'border-red-500 bg-red-500/10'
                             : ''
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2">
                           {showCorrect && <CheckCircle2 className="h-4 w-4 text-green-500" />}
