@@ -12,8 +12,6 @@ node_modules
 dist
 dist-ssr
 *.local
-BACKEND_INTEGRATION_CHECKLIST.md
-FRONTEND_EXPLAINED.md
 
 # Editor directories and files
 .vscode/*
