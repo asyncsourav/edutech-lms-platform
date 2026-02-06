@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Create axios instance with default configuration
 const api = axios.create({
-  
+
   baseURL: `${API_URL}/api`,
   withCredentials: true, // Important: This sends cookies (JWT tokens) with every request
   headers: {
@@ -45,10 +45,11 @@ api.interceptors.response.use(
 
     if (error.response?.status === 401) {
       // Unauthorized - user not logged in or token expired
-      // Redirect to login page
-      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
-        window.location.href = '/login';
-      }
+      // Do NOT force a global redirect here. Let the app handle protected
+      // routes and show login/register when appropriate. This avoids
+      // unexpected navigation (e.g. landing page briefly showing then redirecting).
+      // We simply pass the error through.
+      console.warn('API 401 Unauthorized');
     }
 
     return Promise.reject(error);

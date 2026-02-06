@@ -80,17 +80,25 @@ export function Header() {
                 </Button>
               </Link>
 
-              {/* Purchased Courses Dropdown */}
+              {/* Main Courses button (goes to all courses) */}
+              <Link to="/dashboard">
+                <Button variant="outline" size="sm" className="hidden sm:flex">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Courses</span>
+                </Button>
+              </Link>
+
+              {/* My Purchased Courses dropdown (separate) */}
               <div className="relative">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="relative"
+                  className="ml-2"
                   onClick={() => setShowPurchasedDropdown(!showPurchasedDropdown)}
-                  title="Your purchased courses"
+                  title="My Courses"
                 >
                   <BookOpen className="mr-2 h-4 w-4" />
-                  <span className="hidden sm:inline">Courses</span>
+                  <span className="hidden sm:inline">My Courses</span>
                   {purchasedCoursesCount > 0 && (
                     <span className="ml-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-primary rounded-full">
                       {purchasedCoursesCount}
