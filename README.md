@@ -1,9 +1,9 @@
-# 🚀 Production-Grade Full Stack LMS (MERN + AI + Payments)
+# Production-Grade Full Stack LMS (MERN + AI + Payments)
 
 This project is a **production-oriented Learning Management System (LMS)** designed to closely resemble **real-world edtech platforms**. It focuses on **scalability, security, and maintainable architecture**, with a professional UI/UX that rivals commercial LMS solutions.
 
 
-## 🎯 Overview
+## Overview
 
 The system supports **role-based users**, **secure payments**, **AI-powered learning tools**, and **comprehensive analytics**, making it suitable for **startup-grade applications and paid full-stack internships**.
 
@@ -11,9 +11,9 @@ This project was built with a **backend-first, production mindset**, prioritizin
 
 ---
 
-## ✨ Features
+## Features
 
-### 🔐 Authentication & Authorization
+### Authentication & Authorization
 - JWT-based authentication with httpOnly cookies
 - Role-based access control (Admin/User)
 - Secure password hashing with bcrypt
@@ -21,7 +21,7 @@ This project was built with a **backend-first, production mindset**, prioritizin
 - Session management
 - Automatic token refresh
 
-### 📚 Course Management
+### Course Management
 - **Admin Features:**
   - Create, read, update, and delete courses
   - Hide/unhide courses for visibility control
@@ -35,46 +35,46 @@ This project was built with a **backend-first, production mindset**, prioritizin
 - Module and video content management
 - Course enrollment tracking
 
-### 👥 User Purchased Courses Feature
+### User Purchased Courses Feature
 - **Quick Access:** View count badge in header
 - **Dropdown Menu:** Click to see all purchased courses
 - **Easy Navigation:** Direct links to learning pages
 - **Course Preview:** Thumbnail and price display in dropdown
 
-### 💳 Payment Integration
+### Payment Integration
 - Stripe Checkout integration
 - Secure payment processing
 - Order and enrollment management
 - Purchase success handling
 - Payment verification
 
-### 🤖 AI-Powered Features
+### AI-Powered Features
 - Google Gemini AI integration
 - Intelligent course search with natural language processing
 - Automatic quiz generation from course content
 - 10 MCQ questions with explanations per quiz
 
-### 📊 Analytics Dashboard (Admin)
+### Analytics Dashboard (Admin)
 - Total users, courses, and enrollments
 - Revenue tracking and reporting
 - Daily analytics with date range filtering
 - Visual data representation
 - Course management interface
 
-### 🎥 Learning Experience
+### Learning Experience
 - Video player for course modules
 - Comments system for each module
 - AI-generated quizzes with instant feedback
 - Progress tracking
 - Responsive learning interface
 
-### 👤 User Profile
+### User Profile
 - Profile photo upload (Cloudinary)
 - Name and information updates
 - Profile management
 - Professional profile interface
 
-### 🎨 Professional UI/UX
+### Professional UI/UX
 - Modern, responsive design with premium aesthetics
 - Dark/Light theme toggle with smooth transitions
 - Intuitive navigation
@@ -86,7 +86,7 @@ This project was built with a **backend-first, production mindset**, prioritizin
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React 19** - Modern UI library
@@ -115,7 +115,7 @@ This project was built with a **backend-first, production mindset**, prioritizin
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 LMS platform project/
@@ -198,112 +198,7 @@ LMS platform project/
             └── PurchaseSuccessPage.jsx (ENHANCED UI)
 ```
 
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Node.js** (v18 or higher)
-- **MongoDB** (v6 or higher) or MongoDB Atlas account
-- **npm** or **yarn**
-- **Cloudinary** account (for media storage)
-- **Stripe** account (for payments)
-- **Google AI Studio** account (for Gemini API)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd "LMS platform project"
-   ```
-
-2. **Backend Setup**
-   ```bash
-   cd server
-   npm install
-   ```
-   
-   Create `server/.env` file:
-   ```env
-   PORT=5000
-   NODE_ENV=development
-   MONGO_URI=mongodb://localhost:27017/lms-platform
-   JWT_SECRET=your-super-secret-jwt-key-min-32-characters
-   ADMIN=admin@example.com
-   CLIENT_URL=http://localhost:5173
-   CLOUD_NAME=your-cloudinary-cloud-name
-   CLOUD_API_KEY=your-cloudinary-api-key
-   CLOUD_API_SECRET=your-cloudinary-api-secret
-   STRIPE_PUBLISHABLE_KEY=pk_test_your-stripe-publishable-key
-   STRIPE_SECRET_KEY=sk_test_your-stripe-secret-key
-   GEMINI_API_KEY=your-google-gemini-api-key
-   ```
-
-3. **Frontend Setup**
-   ```bash
-   cd ../client
-   npm install
-   ```
-   
-   Create `client/.env` file:
-   ```env
-   VITE_API_URL=http://localhost:5000
-   VITE_ADMIN_EMAIL=admin@example.com
-   ```
-
-4. **Start Development Servers**
-   
-   Terminal 1 (Backend):
-   ```bash
-   cd server
-   npm run dev
-   ```
-   
-   Terminal 2 (Frontend):
-   ```bash
-   cd client
-   npm run dev
-   ```
-
-5. **Access the Application**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:5000
-
----
-
-## 🔐 Environment Variables
-
-### Backend (`server/.env`)
-
-| Variable | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `PORT` | Server port | Yes | `5000` |
-| `MONGO_URI` | MongoDB connection string | Yes | `mongodb://localhost:27017/lms` |
-| `JWT_SECRET` | Secret for JWT tokens | Yes | `your-secret-key-32-chars` |
-| `ADMIN` | Admin email address | Yes | `admin@example.com` |
-| `CLIENT_URL` | Frontend URL | Yes | `http://localhost:5173` |
-| `CLOUD_NAME` | Cloudinary cloud name | Yes | `your-cloud-name` |
-| `CLOUD_API_KEY` | Cloudinary API key | Yes | `123456789012345` |
-| `CLOUD_API_SECRET` | Cloudinary API secret | Yes | `your-api-secret` |
-| `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key | Yes | `pk_test_...` |
-| `STRIPE_SECRET_KEY` | Stripe secret key | Yes | `sk_test_...` |
-| `GEMINI_API_KEY` | Google Gemini API key | Yes | `your-gemini-key` |
-| `NODE_ENV` | Environment mode | No | `development` |
-
-### Frontend (`client/.env`)
-
-| Variable | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `VITE_API_URL` | Backend API URL | Yes | `http://localhost:5000` |
-| `VITE_ADMIN_EMAIL` | Admin email | Yes | `admin@example.com` |
-
-**Note:** All frontend env vars must start with `VITE_`
-
----
-
-## 📡 API Documentation
+## API Documentation
 
 ### Authentication Endpoints
 
